@@ -1,0 +1,64 @@
+{%extends 'base.html'%}
+{%block content%}
+
+<div class="container">
+    <div class="p-4 m-4">
+        <div class="col-lg-5 mx-auto border rounded pt-4">
+            <h4 class="alert alert-light border rounded">Create New Account</h4>
+            <form action="/signUp" method="POST">
+                {%csrf_token%}
+                <!-- First NAme -->
+                {% if message %}
+                <div class="alert alert-danger" role="alert">
+                    <strong>{{message}}</strong>
+                </div>
+                {%endif%}
+                <div class="form-group">
+                    <label for="">First Name</label>
+                    <input type="text" name="firstname" value="{{fname}}" id="firstname" class="form-control" placeholder=""
+                        aria-describedby="helpId">
+                </div>
+                <!-- LAst NAme -->
+                <div class="form-group">
+                    <label for="">Last Name</label>
+                    <input type="text" name="lastname" value="{{lname}}" id="lastname" class="form-control" placeholder=""
+                        aria-describedby="helpId">
+                </div>
+
+                <!-- email -->
+                <div class="form-group">
+                    <label for="">Email</label>
+                    <input type="email" name="email" id="email" value="{{email}}" class="form-control" placeholder="example@gmail.com"
+                        aria-describedby="helpId">
+                </div>
+                 <!--phone -->
+                 <div class="form-group">
+                    <label for="">Phone</label>
+                    <input type="number" name="phone" id="phone" value="{{phone}}" class="form-control" placeholder="123456789"
+                        aria-describedby="helpId">
+                </div>
+                <!-- password -->
+                <div class="form-group">
+                    <label for="">Password</label>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="******"
+                        aria-describedby="helpId">
+                </div>
+                 <!-- confirm password -->
+                 <div class="form-group">
+                    <label for="">Confirm Password</label>
+                    <input type="password" name="confirmation" id="confirmation" class="form-control" placeholder=""
+                        aria-describedby="helpId">
+                </div>
+
+                <!-- email -->
+                <div class="form-group">
+
+                    <input type="submit" value="Sign Up" class="btn btn-success" class="form-control"
+                        placeholder="example@gmail.com" aria-describedby="helpId">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{%endblock%}
