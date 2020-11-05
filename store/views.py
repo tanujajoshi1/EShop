@@ -8,15 +8,34 @@ from django.contrib.auth.hashers import make_password, check_password
 
 # Create your views here.
 
-def index(request):
-    items= None
-    categories=Category.get_all_categories()
-    categoryID=request.GET.get('category')
-    if categoryID:
-        items=Product.get_all_products_by_id(categoryID)
-    else:
-        items=Product.get_all_products()
-    return render(request,'index.html',{'data':items,'category':categories})
+class Index(View):
+    def get(self,request):
+        # request.session.get('cart').clear()
+        items= None
+        categories=Category.get_all_categories()
+        categoryID=request.GET.get('category')
+        if categoryID:
+            items=Product.get_all_products_by_id(categoryID)
+        else:
+            items=Product.get_all_products()
+        return render(request,'index.html',{'data':items,'category':categories})
+
+    def post(self,request):
+        products= request.POST.get('products')
+        cart= request.session.get('cart')
+        if cart:
+            quantity= cart.get(products)
+            if quantity:
+                cart[products]=1+quantity
+            else:
+                cart[products]=1
+        else:
+            cart={}
+            cart[products]=1
+        request.session['cart']=cart
+        return redirect('/')
+
+
 
 
 
@@ -74,7 +93,10 @@ class Login(View):
         customer=Customer.objects.get(email=email)
 
         if check_password(password,customer.password):
-            return redirect('/')
+            request.session['customer_id']=customer.id  ##saving to session
+            request.session['email']=customer.email
+            user=request.session.get('email')
+            return render(request,'index.html',{user:'user'})
         else:
             error_message="Email / Password invalid"
             return render(request,'login.html',{'error_message':error_message})

@@ -1,10 +1,14 @@
 
 {%extends 'base.html' %}
+
     <!-- Body section -->
     {%block content %}
+    {%load cart%}
     <body>
+     
       <div class="container-fluid mt-4">
        <div class="row">
+         
 <!-- categories -->
 
         <div class="col-lg-3 mx-auto ">
@@ -28,10 +32,32 @@
                   <h6>{{i.price}}</h6>
                   <p class="card-text">{{i.description}}</p>
                   <p class="card-text">{{i.category}}</p>
-                  <a href="#" class="btn btn-dark">Add To Cart</a>
+           {{i|item_in_cart:request.session.cart}}      
+
+
                 </div>
-              </div>
-            {%endfor%}
+
+
+                <div class="card-footer no-gutters">
+
+                  <form action="/" method="post" >
+                    {%csrf_token%}
+                    <input type='text'name="products" hidden value="{{i.id}}">
+                    <input type="submit" class="btn btn-dark btn-block" value="Add to Cart">
+                  </form>
+  
+                  <div class="row" hidden>
+                    
+                    <input type="submit" value="-" class="col-2 btn btn-block btn-secondary"/>
+                    <div class="text-center col"></div>
+                    <input type="submit" value="+" class="col-2 btn btn-block btn-secondary"/>
+                  </div>
+
+                </div>
+
+               
+              </div>       
+              {%endfor%}
            </div>
          </div>
        </div>
